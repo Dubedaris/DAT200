@@ -8,7 +8,7 @@ gradient.addColorStop(0, "darkBlue");
 gradient.addColorStop(1, "red");
 
 ctx.fillStyle = gradient;
-ctx.fillRect(0,0, 600, 300);
+ctx.fillRect(0, 0, 600, 300);
 
 function drawMountains() {
     ctx.beginPath()
