@@ -6,6 +6,8 @@ const circleX = 300;
 const circleY = 300;
 const radius = 10;
 
+let dragging = false;
+
 function background() {
     ctx.fillStyle = "orange";
     ctx.fillRect(0, 0 , 600, 600);
@@ -33,13 +35,28 @@ background();
 startLine();
 
 cvs.addEventListener("mousemove", function (e) {
-    let currX = e.clientX - cvs.offsetLeft; //Man bruker offset for å få riktig posisjon i forhold til grafikken man har tegnet på Canvaset 
-    let currY = e.clientY - cvs.offsetTop;  //Man bruker offset for å få riktig posisjon i forhold til grafikken man har tegnet på Canvaset
+    let currX = e.clientX - cvs.offsetLeft;
+    let currY = e.clientY - cvs.offsetTop;
     let l = Math.sqrt((currX-circleX)**2+(currY-circleY)**2);
     if (l <= radius) { 
-         document.getElementById("cvs").style.cursor = "pointer"; //her kan man evetuelt utføre tester på det man har mottatt 
+         document.getElementById("cvs").style.cursor = "pointer";
     } else {
         document.getElementById("cvs").style.cursor = "auto";
+    }
+    if (dragging) {
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+        background();
+
+        ctx.beginPath();
+        ctx.moveTo(20, 300);
+        ctx.lineTo(currX, currY);
+        ctx.lineTo(580, 300);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(currX, currY, radius, 0, 2 * Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill();
     }
 }, false);
 
@@ -47,29 +64,18 @@ cvs.addEventListener("mousedown", function (e) {
     let currX = e.clientX - cvs.offsetLeft;
     let currY = e.clientY - cvs.offsetTop; 
     let l = Math.sqrt((currX-circleX)**2+(currY-circleY)**2);
-    document.getElementById("cvs").style.cursor = "grabbing";
-    if ("mousemove") {  
-        ctx.clearRect(0, 0, cvs.width, cvs.height);
-        background();
-        ctx.beginPath();
-        ctx.arc(currX, currY, radius, 0, 2 * Math.PI);
-        ctx.fillStyle = "black";
-        ctx.fill();
-        ctx.beginPath();
-        ctx.moveTo(20, 300);
-        ctx.lineTo(currX, currY);
-        ctx.lineTo(580, 300);
-        ctx.stroke();
+    if (l <= radius) {  
+        document.getElementById("cvs").style.cursor = "grabbing"; 
+        dragging = true;  
     }
 }, false);
 
 cvs.addEventListener("mouseup", function (e) {
-    let currX = e.clientX - cvs.offsetLeft; //Man bruker offset for å få riktig posisjon i forhold til grafikken man har tegnet på Canvaset 
-    let currY = e.clientY - cvs.offsetTop;  //Man bruker offset for å få riktig posisjon i forhold til grafikken man har tegnet på Canvaset
-    if ("mouseup") {  
-        background();
-        startLine();
-    }
+    let currX = e.clientX - cvs.offsetLeft;
+    let currY = e.clientY - cvs.offsetTop;
+    dragging = false;
+    background();
+    startLine();
 }, false);
 
 
