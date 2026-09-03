@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Kunst</title>
+
+</head>
+
+<body>
+    <canvas id="cvs" width="600" height="600" style="border:1px solid #f0608b;">
+    </canvas>
+    <script>
+        "use strict";
+        const cvs = document.getElementById("cvs");
+        const ctx = cvs.getContext("2d");
+
+        const gradient = ctx.createRadialGradient(300, 300, 360, 300, 300, 10);
+        gradient.addColorStop(0, "pink");
+        gradient.addColorStop(1, "lightblue");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 600, 600);
+
+
+
+        function drawSquares(x, y, e) {
+            let x0 = 0 + x;
+            let y0 = 0 + y;
+            let x1 = 120 + x;
+            let y1 = 0 + y;
+            let x2 = 120 + x;
+            let y2 = 120 + y;
+            let x3 = 0 + x;
+            let y3 = 120 + y;
+            for (let i = 0; i < 40; i++) {
+                ctx.beginPath();
+                ctx.moveTo(x0, y0);
+                ctx.lineTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.lineTo(x3, y3);
+                ctx.closePath();
+                ctx.stroke();
+
+                let xG = x0;
+                let yG = y0;
+
+                x0 = x0 + (x1 - x0) * e;
+                y0 = y0 + (y1 - y0) * e;
+                x1 = x1 + (x2 - x1) * e;
+                y1 = y1 + (y2 - y1) * e;
+                x2 = x2 + (x3 - x2) * e;
+                y2 = y2 + (y3 - y2) * e;
+                x3 = x3 + (xG - x3) * e;
+                y3 = y3 + (yG - y3) * e;
+            }
+        }
+        drawSquares(0, 0, 0.9);
+        drawSquares(120, 0, 0.1);
+        drawSquares(240, 0, 0.9);
+        drawSquares(360, 0, 0.1);
+        drawSquares(480, 0, 0.9);
+        drawSquares(0, 120, 0.1);
+        drawSquares(120, 120, 0.9);
+        drawSquares(240, 120, 0.1);
+        drawSquares(360, 120, 0.9);
+        drawSquares(480, 120, 0.1);
+        drawSquares(0, 240, 0.9);
+        drawSquares(120, 240, 0.1);
+        drawSquares(240, 240, 0.9);
+        drawSquares(360, 240, 0.1);
+        drawSquares(480, 240, 0.9);
+        drawSquares(0, 360, 0.1);
+        drawSquares(120, 360, 0.9);
+        drawSquares(240, 360, 0.1);
+        drawSquares(360, 360, 0.9);
+        drawSquares(480, 360, 0.1);
+        drawSquares(0, 480, 0.9);
+        drawSquares(120, 480, 0.1);
+        drawSquares(240, 480, 0.9);
+        drawSquares(360, 480, 0.1);
+        drawSquares(480, 480, 0.9);
+    </script>
+</body>

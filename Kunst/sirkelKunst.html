@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Kunst</title>
+
+</head>
+
+<body>
+    <form>
+        <label for="amount">Antall punkter</label>
+        <select id="amount" onchange="draw()">
+            <option>16</option>
+            <option>32</option>
+            <option>64</option>
+            <option>128</option>
+            <option>256</option>
+            <option>512</option>
+        </select>
+        <label for="k">x til kx</label>
+        <select id="k" onchange="draw()">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>max</option>
+        </select>
+        <br />
+        <br />
+    </form>
+    <canvas id="cvs" width="600" height="600" style="border:1px solid #f0608b;">
+    </canvas>
+    <script>
+        "use strict";
+
+        const cvs = document.getElementById("cvs");
+        const ctx = cvs.getContext("2d");
+        const amount = document.getElementById("amount");
+        const k = document.getElementById("k");
+        let x = [];
+        let y = [];
+
+        const gradient = ctx.createRadialGradient(300, 300, 360, 300, 300, 10);
+        gradient.addColorStop(0, "pink");
+        gradient.addColorStop(1, "lightblue");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 600, 600);
+
+
+        const r = 300; //r = radius
+        const cX = 300; // cX = x of circle center
+        const cY = 300; // cY = y of circle center
+
+        draw();
+
+        function draw() {
+            const points = parseInt(amount.value);
+            let kx = k.value;
+            if(kx === "max") {
+                kx = points;
+            }
+            let v = 0;
+            let dv = 2 * Math.PI / points; // radian
+            x = [];
+            y = [];
+            ctx.clearRect(0, 0, 600, 600);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 600, 600);
+
+            ctx.strokeStyle = "black";
+            ctx.beginPath();
+            for (let i = 0; i < points; i++) {
+                x[i] = cX + r * Math.cos(v);
+                y[i] = cY + r * Math.sin(v);
+                v += dv;
+
+                if (i === 0) {
+                    ctx.moveTo(600, 300)
+                } else {
+                    ctx.lineTo(x[i], y[i]);
+                }
+            }
+            ctx.closePath();
+            ctx.stroke();
+
+            
+            for (let i = 0; i < points; i++) {
+                ctx.beginPath();
+                ctx.moveTo(x[i], y[i])
+                ctx.lineTo(x[(i * kx) % points], y[(i * kx) % points]);
+                ctx.closePath();
+                ctx.stroke();
+            }
+        }
+    </script>
+</body>
